@@ -8,6 +8,10 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
+app.get("/", (req, res) => {
+    res.send("Adi e prost")
+})
+
 app.get("/user", async (req, res) => {
     const user = await User.find({})
     console.log(user)
