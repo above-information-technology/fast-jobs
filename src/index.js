@@ -1,8 +1,8 @@
 require('./db/mongoose')
 const express = require('express')
 const User = require('./models/user')
-const Job = require('./models/job')
 const { ObjectID } = require('mongodb')
+const Login = require('./models/login')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -22,6 +22,7 @@ app.get("/user", async (req, res) => {
 app.post("/register/credentials", async (req, res) => {
 
     const id = new ObjectID()
+    console.log(id, "acesta este id - ul")
 
     const userFields = {
         _id: id,
@@ -38,14 +39,15 @@ app.post("/register/credentials", async (req, res) => {
     }
 
     const user = new User(userFields)
+    const login = new Login(loginFields)
     console.log(req.body)
-    console.log(user)
+    //console.log(user)
     try {
         await user.save()
-        await loginFields.save()
+        await login.save()
         res.status(201).send(user)
     } catch {
-        await res.status(400).send("User-ul nu a putut fi creat")
+        res.status(400).send("User-ul nu a putut fi creat")
     }
 })
 
