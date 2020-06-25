@@ -13,10 +13,35 @@ app.get("/", (req, res) => {
     res.send("Router page")
 })
 
-app.get("/user", async (req, res) => {
-    const user = await User.find({})
-    console.log(user)
-    res.send()
+app.post("/login/credentials", async (req, res) => {
+
+    let id, _id;
+    
+    try {
+
+        id = await Login.findByCredentials(req.body.username, req.body.password)
+
+    } catch (e) {
+        if (e.message == "User not found!") {
+            return res.status(404).send(e.message)
+        }
+
+        return res.status(400).send("Unable to recieve user")
+
+    }
+
+    try {
+
+        _id = new ObjectID(id)
+        const user = await User.findById(_id)
+        return res.status(200).send(user)
+        
+    } catch {
+
+        return res.status(400).send("User not found!")
+
+    }
+
 })
 
 app.post("/register/credentials", async (req, res) => {

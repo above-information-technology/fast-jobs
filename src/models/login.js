@@ -13,6 +13,16 @@ const loginSchema = new Schema({
     }
 })
 
+loginSchema.statics.findByCredentials = async (username, password) => {
+    const user = await Login.findOne({username, password})
+
+    if (!user) {
+        throw new Error("User not found!")
+    }
+
+    return user._id
+}
+
 const Login = mongoose.model('Login', loginSchema)
 
 module.exports = Login
