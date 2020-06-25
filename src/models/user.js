@@ -1,13 +1,9 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const Schema = mongoose.Schema;
 
-const User = mongoose.model('User', {
-    firstName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    lastName : {
+const userSchema = new Schema({
+    name: {
         type: String,
         required: true,
         trim: true
@@ -20,7 +16,25 @@ const User = mongoose.model('User', {
                 throw new Error("Invalid email")
             }
         }
+    },
+    username: {
+        type: String
+    },
+    phoneNumber: {
+        type: String,
+    },
+    rating: {
+        type: Number,
+        default: 0
+    },
+    numberOfRatings: {
+        type: Number,
+        default: 0
     }
 })
+
+userSchema.statics.findById
+
+const User = mongoose.model('User', userSchema)
 
 module.exports = User

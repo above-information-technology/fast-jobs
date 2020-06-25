@@ -2,6 +2,7 @@ require('./db/mongoose')
 const express = require('express')
 const User = require('./models/user')
 const Job = require('./models/job')
+const { ObjectID } = require('mongodb')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -9,7 +10,7 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 
 app.get("/", (req, res) => {
-    res.send("Adi e prost")
+    res.send("Router page")
 })
 
 app.get("/user", async (req, res) => {
@@ -18,16 +19,33 @@ app.get("/user", async (req, res) => {
     res.send()
 })
 
-app.post("/register", async (req, res) => {
+app.post("/register/credentials", async (req, res) => {
 
-    const user = new User(req.body)
+    const id = new ObjectID()
+
+    const userFields = {
+        _id: id,
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username,
+        phoneNumber: req.body.phoneNumber
+    }
+
+    const loginFields = {
+        username: req.body.username,
+        password: req.body.password,
+        _id: id
+    }
+
+    const user = new User(userFields)
     console.log(req.body)
     console.log(user)
     try {
         await user.save()
-        res.status(201).send()
+        await loginFields.save()
+        res.status(201).send(user)
     } catch {
-        await res.status(400).send("bad request")
+        await res.status(400).send("User-ul nu a putut fi creat")
     }
 })
 
