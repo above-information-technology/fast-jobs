@@ -99,6 +99,8 @@ router.get('/job/cost', async (req, res) => {
 
         const jobs = await Job.find({ cost: { $gte: lowCost, $lte: highCost } })
 
+
+        console.log(jobs)
         const jobsWithDistance = jobs.map(job => {
             const end = {
                 latitude: job.latitude,
@@ -115,7 +117,7 @@ router.get('/job/cost', async (req, res) => {
 
         jobsWithDistance.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
 
-
+        return res.status(200).send(jobsWithDistance)
 
 
     } catch (e) {
