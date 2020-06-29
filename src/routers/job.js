@@ -85,4 +85,49 @@ router.get('/job', async (req, res) => {
     }
 })
 
+router.get('/job/cost', async (req, res) => {
+
+    const lowCost = Number(req.query.lowCost)
+    const highCost = Number(req.query.highCost)
+
+    const start = {
+        latitude: req.query.latitude,
+        longitude: req.query.longitude
+    }
+
+    try {
+
+        const jobs = await Job.find({ cost: { $gte: lowCost, $lte: highCost } })
+
+        const jobsWithDistance = jobs.map(job => {
+            const end = {
+                latitude: job.latitude,
+                longitude: job.longitude
+            }
+
+            const distance = haversine(start, end, {unit: 'km'}).toFixed(1)
+
+            return {
+                distance,
+                job
+            }
+        })
+
+        jobsWithDistance.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+
+
+
+
+    } catch (e) {
+
+        if (jobs.length == 0) {
+            return res.status(404).send('Nu a fost gasit niciun job!')
+        }
+
+        return res.status(404).send(e.message)
+
+    }
+
+})
+
 module.exports = router
