@@ -1,7 +1,4 @@
 const express = require('express')
-const User = require('../models/user')
-const Login = require('../models/login')
-const { ObjectID } = require('mongodb')
 const Job = require('../models/job')
 const router = new express.Router()
 const haversine = require('haversine')
