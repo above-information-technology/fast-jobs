@@ -20,19 +20,40 @@ router.post('/applicant', async (req, res) => {
 router.get('/applicant/:id', async (req, res) => {
     
     const id = req.params.id
+    let applicants = []
 
     try {
 
         const applicant = await Applicant.find({ jobId: id })
 
-        allUsers = applicant.map(async (applic) => {
-            const _id = new ObjectID(applicant.id)
+        console.log(applicant)
+
+        await applicant.forEach(async (applic) => {
+            const _id = new ObjectID(applic.userId)
+
             const user = await User.findById(_id)
 
-            return user
+            console.log(user)
+
+            applicants.push(user)
+
         })
 
-        return res.status(200).send(allUsers)
+        // allUsers = applicant.map(async (applic) => {
+        //     const _id = new ObjectID(applic.userId)
+
+        //     console.log(_id)
+    
+        //     const user = await User.findById(_id)
+
+        //     console.log('user', user)
+
+        //     return user
+        // })
+        setTimeout(() => {
+            return res.status(200).send(applicants)
+        }, 1000)
+
 
     } catch {
 
