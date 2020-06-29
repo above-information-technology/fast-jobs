@@ -1,26 +1,50 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const { text } = require('express')
 
 const Job = mongoose.model('Job', {
-    name: {
+    jobOwner: {
         type: String,
         required: true,
         trim: true
     },
-    domain: {
+    latitude: {
+        type: String,
+        required: true
+    },
+    longitude: {
+        type: String,
+        required: true
+    },
+    jobTitle: {
         type: String,
         required: true,
         trim: true
     },
-    location: {
-        latitude: {
-            type: String,
-            required: true
-        },
-        longitude: {
-            type: String,
-            required: true
-        }
+    description: {
+        type: String,
+        required: true
+    },
+    cost: {
+        type: Number,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    beginDate: {
+        type: String,
+        required: true
+    },
+    endDate: {
+        type: String,
+        required: true
+    },
+    fullJob: {
+        type: Boolean,
+        required: true
     }
 })
 
