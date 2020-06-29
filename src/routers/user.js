@@ -28,21 +28,24 @@ router.get('/user/:id', async (req, res) => {
 
 })
 
-router.post('/user/rating/', async (req, res) => {
+router.post('/user/rating', async (req, res) => {
 
-    const rating = req.params.rating
-    const id = new ObjectID(req.params.id)
+    const reqRating = req.body.rating
+    const _id = new ObjectID(req.body.id)
 
     try {
 
-        const user = await User.findById(id)
-        user = await User.updateOne({ rating: (this.rating * this.numberOfRatings + rating) / (numberOfRatings + 1) })
-        user = await User.updateOne({ numberOfRatings: this.numberOfRatings + 1 })
+        const user = await User.findById(_id)
+        const thisRating = user.rating
+        const nrOfRatings = user.numberOfRatings
+        console.log(thisRating)
+        rat = await User.updateOne({ _id }, { rating: (thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1), numberOfRatings: nrOfRatings + 1 })
+        console.log(rat)
         return res.status(200).send('Rating-ul a fost trimis cu succes!')
 
-    } catch {
+    } catch (e){
         
-        return res.status(400).send('Nu a putut fi trimis rating-ul!')
+        return res.status(400).send(e.message)
 
     }
 })
