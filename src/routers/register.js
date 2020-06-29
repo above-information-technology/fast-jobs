@@ -25,14 +25,17 @@ router.post("/register/credentials", async (req, res) => {
 
     const user = new User(userFields)
     const login = new Login(loginFields)
-    console.log(req.body)
-    //console.log(user)
+
     try {
+
         await user.save()
         await login.save()
-        res.status(201).send(user)
+        return res.status(201).send(user)
+
     } catch {
-        res.status(400).send("User-ul nu a putut fi creat")
+
+        return res.status(400).send("User-ul nu a putut fi creat")
+        
     }
 })
 
