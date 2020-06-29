@@ -141,6 +141,8 @@ router.get('/job/distance', async (req, res) => {
 
     try {
 
+        const jobs = await Job.find({})
+
         const jobsWithDistance = jobs.map(job => {
             const end = {
                 latitude: job.latitude,
@@ -162,7 +164,7 @@ router.get('/job/distance', async (req, res) => {
         return res.status(200).send(jobsWithDistanceLessThan)
 
     } catch (e) {
-        
+
         if (jobs.length == 0) {
             return res.status(404).send('Nu a fost gasit niciun job!')
         }
