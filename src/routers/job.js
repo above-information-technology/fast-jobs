@@ -9,23 +9,52 @@ router.post('/job', async (req, res) => {
     const job = new Job(req.body)
 
     try {
+
         await job.save()
-        res.status(201).send(job)
+        return res.status(201).send(job)
+
     } catch {
-        res.status(400).send('Jobul nu a putut fi creat!')
+
+        return res.status(400).send('Jobul nu a putut fi creat!')
+
     }
 })
 
 router.get('/job/:type', async (req, res) => {
-    type = req.params.type
+    type = req.params.type.replace('_', "")
     
     try {
+
         const jobs = await Job.find({ type })
-        res.status(200).send(jobs)
-    } catch {
-        res.status(404).send('Nu au fost gasite joburi!')
+        return res.status(200).send(jobs)
+
+    } catch (e) {
+
+        if (jobs.length == 0) {
+            return res.status(404).send('Nu a fost gasit niciun job!')
+        }
+
+        return res.status(404).send(e.message)
+
     }
 
+})
+
+router.get('/job', async (req, res) => {
+    try {
+
+        const jobs = await Job.find({})
+        return res.status(200).send(jobs)
+
+    } catch (e) {
+
+        if (jobs.length == 0) {
+            return res.status(404).send('Nu a fost gasit niciun job!')
+        }
+
+        return res.status(400).send(e.message)
+
+    }
 })
 
 module.exports = router
