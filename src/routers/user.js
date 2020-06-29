@@ -9,7 +9,12 @@ router.get('/user/:id', async (req, res) => {
     try {
 
         const user = await User.findById(id)
-        return res.send(user.name)
+        return res.send(
+                        { 
+                            name: user.name,
+                            rating: user.rating 
+                        }
+                       )
 
     } catch(e) {
 
