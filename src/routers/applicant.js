@@ -25,7 +25,7 @@ router.get('/applicant/:id', async (req, res) => {
 
         const applicant = await Applicant.find({ jobId: id })
 
-        allUsers = applicant.map(applic => {
+        allUsers = applicant.map(async (applic) => {
             const _id = new ObjectID(applicant.id)
             const user = await User.findById(_id)
 
