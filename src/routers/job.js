@@ -99,8 +99,6 @@ router.get('/job/cost', async (req, res) => {
 
         const jobs = await Job.find({ cost: { $gte: lowCost, $lte: highCost } })
 
-
-        console.log(jobs)
         const jobsWithDistance = jobs.map(job => {
             const end = {
                 latitude: job.latitude,
@@ -128,6 +126,48 @@ router.get('/job/cost', async (req, res) => {
 
         return res.status(404).send(e.message)
 
+    }
+
+})
+
+router.get('/job/distance', async (req, res) => {
+
+    const start = {
+        latitude: req.query.latitude,
+        longitude: req.query.longitude
+    }
+
+    const maxDistance = req.query.distance
+
+    try {
+
+        const jobsWithDistance = jobs.map(job => {
+            const end = {
+                latitude: job.latitude,
+                longitude: job.longitude
+            }
+
+            const distance = haversine(start, end, {unit: 'km'}).toFixed(1)
+
+            return {
+                distance,
+                job
+            }
+        })
+
+        const jobsWithDistanceLessThan = jobsWithDistance.find(job => job.distance <= maxDistance)
+
+        jobsWithDistanceLessThan.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+
+        return res.status(200).send(jobsWithDistanceLessThan)
+
+    } catch (e) {
+        
+        if (jobs.length == 0) {
+            return res.status(404).send('Nu a fost gasit niciun job!')
+        }
+
+        return res.status(404).send(e.message)
     }
 
 })
