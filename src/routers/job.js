@@ -42,7 +42,7 @@ router.get('/job/type', async (req, res) => {
                 longitude: job.longitude
             }
 
-            const distance = haversine(start, end, {unit: 'km'})
+            const distance = haversine(start, end, {unit: 'km'}).toFixed(1)
 
             return {
                 distance,
