@@ -179,11 +179,11 @@ router.get('/job/distance', async (req, res) => {
 
 router.get('/job/:id', async (req, res) => {
 
-    id = new ObjectID(req.params.id)
+    id = req.params.id
 
     try {
 
-        const jobs = await Job.findById(id)
+        const jobs = await Job.find({jobOwner: id})
         return res.status(200).send(jobs)
 
     } catch (e) {
