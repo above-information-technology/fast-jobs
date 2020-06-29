@@ -157,7 +157,10 @@ router.get('/job/distance', async (req, res) => {
             }
         })
 
-        const jobsWithDistanceLessThan = jobsWithDistance.find(job => job.distance <= maxDistance)
+        const jobsWithDistanceLessThan = jobsWithDistance.filter(job => job.distance <= maxDistance)
+
+        console.log('max distance', maxDistance)
+        console.log(jobsWithDistanceLessThan)
 
         jobsWithDistanceLessThan.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
 
