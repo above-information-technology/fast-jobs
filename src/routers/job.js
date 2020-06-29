@@ -4,6 +4,7 @@ const Login = require('../models/login')
 const { ObjectID } = require('mongodb')
 const Job = require('../models/job')
 const router = new express.Router()
+const haversine = require('haversine')
 
 router.post('/job', async (req, res) => {
     const job = new Job(req.body)
@@ -20,13 +21,40 @@ router.post('/job', async (req, res) => {
     }
 })
 
-router.get('/job/:type', async (req, res) => {
-    type = req.params.type.replace('_', "")
+router.get('/job/type', async (req, res) => {
+
+    const type = req.query.type
+    const start = {
+        latitude: req.query.latitude,
+        longitude: req.query.longitude
+    } 
     
     try {
 
         const jobs = await Job.find({ type })
-        return res.status(200).send(jobs)
+        console.log(type)
+
+
+
+        const jobsWithDistance = jobs.map(job => {
+            const end = {
+                latitude: job.latitude,
+                longitude: job.longitude
+            }
+
+            const distance = haversine(start, end, {unit: 'meter'})
+
+            return {
+                distance,
+                job
+            }
+        })
+
+        jobsWithDistance.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+
+        console.log(jobsWithDistance)
+        
+        return res.status(200).send(jobsWithDistance)
 
     } catch (e) {
 
