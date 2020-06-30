@@ -30,15 +30,15 @@ router.get('/user/:id', async (req, res) => {
 
 router.post('/user/rating', async (req, res) => {
 
-    const reqRating = req.body.rating
+    const reqRating = Number(req.body.rating)
     const _id = new ObjectID(req.body.id)
 
     console.log(req.body)
     try {
 
         const user = await User.findById(_id)
-        const thisRating = user.rating
-        const nrOfRatings = user.numberOfRatings
+        const thisRating = Number(user.rating)
+        const nrOfRatings = Number(user.numberOfRatings)
         rat = await User.updateOne({ _id }, { rating: (thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1), numberOfRatings: nrOfRatings + 1 })
         return res.status(200).send('Rating-ul a fost trimis cu succes!')
 
