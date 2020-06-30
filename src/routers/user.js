@@ -3,6 +3,7 @@ const User = require('../models/user')
 const { ObjectID } = require('mongodb')
 const Job = require('../models/job')
 const Applicant = require('../models/applicant')
+const Login = require('../models/login')
 const router = new express.Router()
 
 router.get('/user/:id', async (req, res) => {
@@ -44,12 +45,6 @@ router.post('/user/rating', async (req, res) => {
 
         rat = await User.updateOne({ _id }, { rating: Number(((thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1)).toFixed(2)), numberOfRatings: nrOfRatings + 1 })
 
-        fetch("https://fast-jobs-licenta.herokuapp.com/job/" + _id,
-            {
-                method: "DELETE"
-            }
-        ).then(res => console.log(res))
-
         const applicants = await Applicant.deleteMany({ jobId: _id })
 
         return res.status(200).send('Rating-ul a fost trimis cu succes!')
@@ -59,6 +54,21 @@ router.post('/user/rating', async (req, res) => {
         return res.status(400).send(e.message)
 
     }
+})
+
+router.patch('/user', async (req, res) => {
+    
+    try {
+
+        const user = await Login.updateOne({ username: req.body.username, password: req.body.oldPassword }, { password: req.body.newPassword })
+        return res.status(200).send('Parola a fost modificata cu succes!')
+
+    } catch {
+
+        return res.status(400).send('Nu a putut fi modificata parola!')
+
+    }
+
 })
 
 module.exports = router
