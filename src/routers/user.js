@@ -44,6 +44,7 @@ router.post('/user/rating', async (req, res) => {
 
         rat = await User.updateOne({ _id }, { rating: Number(((thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1)).toFixed(2)), numberOfRatings: nrOfRatings + 1 })
 
+        console.log("adi suge pula")
         const deleteJob = await Job.deleteOne({ _id })
         console.log(deleteJob)
 
