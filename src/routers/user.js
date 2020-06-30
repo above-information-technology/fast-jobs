@@ -39,7 +39,7 @@ router.post('/user/rating', async (req, res) => {
         const user = await User.findById(_id)
         const thisRating = Number(user.rating)
         const nrOfRatings = Number(user.numberOfRatings)
-        rat = await User.updateOne({ _id }, { rating: (thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1), numberOfRatings: nrOfRatings + 1 })
+        rat = await User.updateOne({ _id }, { rating: Number(((thisRating * nrOfRatings + reqRating) / (nrOfRatings + 1)).toFixed(2)), numberOfRatings: nrOfRatings + 1 })
         return res.status(200).send('Rating-ul a fost trimis cu succes!')
 
     } catch (e){
