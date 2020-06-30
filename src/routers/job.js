@@ -2,6 +2,7 @@ const express = require('express')
 const Job = require('../models/job')
 const router = new express.Router()
 const haversine = require('haversine')
+const { ObjectID } = require('mongodb')
 
 router.post('/job', async (req, res) => {
     const job = new Job(req.body)
@@ -189,6 +190,21 @@ router.get('/job/:id', async (req, res) => {
 
     }
 
+})
+
+router.delete('/job/:id', async (req, res) => {
+    const _id = new ObjectID(req.params.id)
+
+    try {
+
+        const job = await Job.deleteOne({ _id })
+        return res.status(201).send("Job-ul a fost sters cu succes!")
+
+    } catch (e) {
+
+        return res.status(400).send(e.message)
+
+    }
 })
 
 module.exports = router
