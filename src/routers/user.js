@@ -74,11 +74,11 @@ router.patch('/user', async (req, res) => {
 
 })
 
-router.get("/user/token/:token", async (req, res) => {
+router.post("/user/token", async (req, res) => {
 
     try {
 
-        const payload = await verifyToken(req.params.token)
+        const payload = await verifyToken(req.body.token)
         const user  = await User.findOne({ email: payload.email })
 
         if (Boolean(user)) {
