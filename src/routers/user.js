@@ -81,6 +81,8 @@ router.get("/user/token/:token", async (req, res) => {
         const payload = await verifyToken(req.params.token)
         const user  = await User.findOne({ email: payload.email })
 
+        console.log(user, "primul")
+
         if (user) {
 
             return res.status(200).send(user)
@@ -106,6 +108,9 @@ router.get("/user/token/:token", async (req, res) => {
 
             await user.save()
             await login.save()
+
+            console.log(user, "al doilea")
+            console.log(login, "login")
 
             res.status(201).send(user)
 
