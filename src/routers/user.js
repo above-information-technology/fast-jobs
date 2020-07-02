@@ -124,10 +124,12 @@ router.get("/user/token/:token", async (req, res) => {
 
 router.put("/user", async (req, res) => {
 
+    const update = req.body
+
     try {
 
-        await User.findOneAndUpdate({ _id: req.body._id }, { phoneNumber: req.body.phoneNumber })
-        return res.status(201).send("User updated successfully!")
+        const user = await User.findOneAndUpdate({ _id: req.body._id }, {...update }) 
+        return res.status(201).send(user)
 
     } catch {
 
