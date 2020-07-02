@@ -79,6 +79,7 @@ router.post("/user/token", async (req, res) => {
     try {
 
         const payload = await verifyToken(req.body.token)
+        console.log(req.body.token)
         const user  = await User.findOne({ email: payload.email })
 
         if (Boolean(user)) {
