@@ -15,7 +15,8 @@ router.get('/user/:id', async (req, res) => {
         return res.send(
                         { 
                             name: user.name,
-                            rating: user.rating 
+                            rating: user.rating,
+                            phone: user.phoneNumber
                         }
                        )
 
