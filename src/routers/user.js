@@ -76,7 +76,7 @@ router.patch('/user', async (req, res) => {
 
 router.get("/user/token/:token", async (req, res) => {
 
-    try() {
+    try {
 
         await verifyToken(req.params.token)
         return res.status(200).send('User successfully authenticated!')
