@@ -81,10 +81,8 @@ router.get("/user/token/:token", async (req, res) => {
         const payload = await verifyToken(req.params.token)
         const user  = await User.findOne({ email: payload.email })
 
-        console.log(user, "primul")
-
-        if (user !== null || user !== undefined) {
-
+        if (Boolean(user)) {
+            
             return res.status(200).send(user)
 
         } else {
@@ -100,19 +98,16 @@ router.get("/user/token/:token", async (req, res) => {
             const newLogin = {
                 _id,
                 username: payload.email,
-                password: random(16)
+                password: random(64)
             }
 
-            user = new User(newUser)
+            newUserCreate = new User(newUser)
             const login = new Login(newLogin)
 
-            await user.save()
+            await newUserCreate.save()
             await login.save()
 
-            console.log(user, "al doilea")
-            console.log(login, "login")
-
-            res.status(201).send(user)
+            return res.status(201).send(newUserCreated)
 
         }
 
