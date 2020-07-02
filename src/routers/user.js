@@ -102,11 +102,13 @@ router.get("/user/token/:token", async (req, res) => {
                 password: random(64)
             }
 
-            newUserCreate = new User(newUser)
+            newUserCreated = new User(newUser)
             const login = new Login(newLogin)
 
-            await newUserCreate.save()
+            await newUserCreated.save()
             await login.save()
+
+            console.log(newUserCreated)
 
             return res.status(201).send(newUserCreated)
 
