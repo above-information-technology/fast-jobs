@@ -93,7 +93,7 @@ router.get("/user/token/:token", async (req, res) => {
                 _id,
                 email: payload.email,
                 name: payload.name,
-                username: payload.name.split(" ").join("_").toLowerCase()
+                username: payload.email.split('@').toLowerCase()
             }
 
             const newLogin = {
@@ -128,7 +128,7 @@ router.put("/user", async (req, res) => {
 
     try {
 
-        const user = await User.findOneAndUpdate({ _id: req.body._id }, {...update }) 
+        const user = await User.findOneAndUpdate({ _id: req.body._id }, {...update })
         return res.status(201).send(user)
 
     } catch {
