@@ -1,9 +1,11 @@
 const express = require('express')
+const {OAuth2Client} = require('google-auth-library');
 const User = require('../models/user')
 const { ObjectID } = require('mongodb')
 const Job = require('../models/job')
 const Applicant = require('../models/applicant')
 const Login = require('../models/login')
+const verifyToken = require('../common/google-auth')
 const router = new express.Router()
 
 router.get('/user/:id', async (req, res) => {
@@ -67,6 +69,21 @@ router.patch('/user', async (req, res) => {
     } catch {
 
         return res.status(400).send('Nu a putut fi modificata parola!')
+
+    }
+
+})
+
+router.get("/user/token/:token", async (req, res) => {
+
+    try() {
+
+        await verifyToken(req.params.token)
+        return res.status(200).send('User successfully authenticated!')
+
+    } catch {
+
+        return res.status(400).send('Cannot authenticate!')
 
     }
 
