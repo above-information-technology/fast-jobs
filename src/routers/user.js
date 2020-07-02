@@ -93,7 +93,7 @@ router.get("/user/token/:token", async (req, res) => {
                 _id,
                 email: payload.email,
                 name: payload.name,
-                username: payload.email.split("@")[0].split(" ").join("_")
+                username: payload.name.split(" ").join("_").toLowerCase()
             }
 
             const newLogin = {
