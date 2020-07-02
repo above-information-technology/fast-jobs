@@ -83,7 +83,7 @@ router.get("/user/token/:token", async (req, res) => {
 
         console.log(user, "primul")
 
-        if (user) {
+        if (user !== null || user !== undefined) {
 
             return res.status(200).send(user)
 
