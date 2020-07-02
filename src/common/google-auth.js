@@ -15,7 +15,7 @@ const verifyToken = (token) => {
       const payload = ticket.getPayload();
       const userid = payload['sub'];
 
-      console.log(userid, 'acesta este use id-ul')
+      console.log(payload, 'acesta este payload-ul')
       // If request specified a G Suite domain:
       // const domain = payload['hd'];
     }
