@@ -13,13 +13,13 @@ const verifyToken = (token) => {
           //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
       const payload = ticket.getPayload();
-      const userid = payload['sub'];
 
-      console.log(payload, 'acesta este payload-ul')
-      // If request specified a G Suite domain:
-      // const domain = payload['hd'];
+      return payload
+      
     }
-    verify().catch(console.error);
+    verify().catch("error");
+
+    return verify()
 
 }
 

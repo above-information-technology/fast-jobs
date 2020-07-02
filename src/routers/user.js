@@ -1,5 +1,5 @@
 const express = require('express')
-const {OAuth2Client} = require('google-auth-library');
+const random = require('random-string-generator')
 const User = require('../models/user')
 const { ObjectID } = require('mongodb')
 const Job = require('../models/job')
@@ -78,8 +78,38 @@ router.get("/user/token/:token", async (req, res) => {
 
     try {
 
-        await verifyToken(req.params.token)
-        return res.status(200).send('User successfully authenticated!')
+        const payload = await verifyToken(req.params.token)
+        const user  = await User.findOne({ email: payload.email })
+
+        if (user) {
+
+            return res.status(200).send(user)
+
+        } else {
+
+            const _id = new ObjectID()
+
+            const newUser = {
+                _id,
+                email: payload.email,
+                name: payload.name
+            }
+
+            const newLogin = {
+                _id,
+                username: payload.email,
+                password: random(16)
+            }
+
+            user = new User(newUser)
+            const login = new Login(newLogin)
+
+            await user.save()
+            await login.save()
+
+            res.status(201).send(user)
+
+        }
 
     } catch {
 
